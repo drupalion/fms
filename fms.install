@@ -1,0 +1,60 @@
+<?php
+
+function fms_install() {
+  eac_realm_add('fms', EAC_DENY, EAC_SINGLE);
+  $users = db_select('users')->fields('users')->execute()->fetchAllAssoc('uid');
+  foreach ($users as $uid => $user) {
+    $gid = eac_group_add('fms');
+    eac_group_add_user($uid, $gid);
+  }
+}
+
+function fms_uninstall() {
+  try {
+    eac_realm_remove('fms', TRUE);
+  } catch (Exception $e) {
+    
+  }
+}
+
+function fms_schema() {
+  $schema['fms_checkin'] = array(
+    'description' => 'fms file checkin history',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'fid' => array(
+        'description' => 'file entity id',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'user id',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'checkin' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'checkout' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
+      ),
+    ),
+    'indexes' => array(
+      'fid' => array('fid'),
+      'uid' => array('uid'),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+}

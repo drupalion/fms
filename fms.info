@@ -1,0 +1,5 @@
+name = File Management System
+description = Provides Lock Checkin and Checkout interface for file entity
+package = Media
+core = 7.x
+version = "7.x-1.x-dev"

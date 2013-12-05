@@ -1,0 +1,28 @@
+<?php
+
+define('FMS_LOCK_NONE', 0);
+define('FMS_LOCK_MYCHECKIN', -1);
+define('FMS_LOCK_ACCESS_DENIED', -2);
+
+module_load_include('inc', 'fms', 'fms.lock');
+module_load_include('inc', 'fms', 'fms.interface');
+
+
+/*
+ * Impeliments hook_vdo_display_alter
+ */
+
+function fms_vdo_display_alter(&$arg, $ctx1) {
+  foreach ($arg as $delta => $element) {
+    $form = drupal_get_form('_fms_vdo_display_alter_form', $ctx1, $delta);
+    $arg[$delta]['fms'] = $form;
+  }
+}
+
+function fms_user_insert(&$edit, $account, $category) {
+  dargs();
+}
+
+function fms_user_cancel($edit, $account, $method) {
+  dargs();
+}
